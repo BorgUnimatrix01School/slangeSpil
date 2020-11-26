@@ -1,10 +1,9 @@
 int[] snake = new int[2];
 String retning = "right";
+String sidsteRetning = "ingenting"; // Denne variabel gemmer sidste retning.
 int boxSize = 10;
 
 byte gameSpeed = 6; // Denne variabel definerer hvor mange frames der skal gå, før den opdaterer slangens placering. Desto lavere, desto hurtigere bevæger slangen sig.
-
-byte keyPressCount = 0; // Denne variabel tæller hvor mange gange der er blevet trykket på tastaturet inden næste opdatering af slangens placering.
 
 void setup(){
 size(300, 300);
@@ -31,18 +30,17 @@ void GmeOver(){
   rect(0, (height/2) - (boxSize * 2), width, boxSize * 4);
   fill(255, 192, 203);
   textSize(20);
-  text("slut prut, du stinker",(width/2) - 85,(height/2) + 5);
+  textAlign(CENTER, CENTER); // Dette sætter teksten op i midten af skærmen, når slangen dør.
+  text("slut prut, du stinker", width/2, height/2);
 }
 void keyPressed(){
-  keyPressCount++;
-  if(keyPressCount <= 1){
-    if(key == 'w' && retning != "ned") retning="op";
-    if(key == 'a' && retning != "right") retning="left";
-    if(key == 's' && retning != "op") retning="ned";
-    if(key == 'd' && retning != "left") retning="right";
-  }
+  if(key == 'w' && sidsteRetning != "ned") retning="op";
+  if(key == 'a' && sidsteRetning != "right") retning="left";
+  if(key == 's' && sidsteRetning != "op") retning="ned";
+  if(key == 'd' && sidsteRetning != "left") retning="right";
 }
 void moveSnake(){
+  sidsteRetning = retning; // Dette gemmer den nuværende retning til sidsteRetning, inden retningen bliver ændret.
   if(retning == "op")
     snake[1] = snake[1] - boxSize;
   if(retning == "left")
@@ -51,8 +49,6 @@ void moveSnake(){
     snake[1] = snake[1] + boxSize;
   if(retning == "right")
     snake[0] = snake[0] + boxSize;
-  
-  keyPressCount = 0;
 }
 
 void initGame(){
